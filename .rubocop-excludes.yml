@@ -1,0 +1,7 @@
+AllCops:
+  Exclude:
+  # Framework generated configuration files
+  - bin/*
+  # Other generated files
+  - spec/spec_helper.rb
+  - job_finder.gemspec

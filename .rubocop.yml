@@ -1,0 +1,52 @@
+AllCops:
+  TargetRubyVersion: 2.5
+  TargetRailsVersion: 5.1.5
+  DisplayCopNames: true
+
+Metrics/AbcSize:
+  Max: 30
+
+Metrics/LineLength:
+  Max: 120
+  IgnoreCopDirectives: true
+
+Metrics/MethodLength:
+  Max: 30
+
+Metrics/ClassLength:
+  Max: 150
+  IgnoreCopDirectives: true
+
+Naming/MemoizedInstanceVariableName:
+  Enabled: false
+
+Naming/UncommunicativeMethodParamName:
+  Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+  - config/routes.rb
+  - spec/**/*.rb
+
+Lint/MissingCopEnableDirective:
+  Enabled: false
+
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+  - spec/**/*.rb
+
+Style/Documentation:
+  Enabled: false
+  Include:
+    - app/**/*.rb
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/AndOr:
+  EnforcedStyle: conditionals
+
+inherit_from: .rubocop-excludes.yml
