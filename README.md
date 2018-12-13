@@ -25,6 +25,10 @@ After checking out the repo, run `bin/setup` to install dependencies. Then, run 
 # Add mechanize gem support to support clicks
 # scraping from the linked job pages in addition to the main search page
 # scraping multiple search results pages
+# Need to implement logic for stoping pagination iteration if result is blank
+# Raise errors if Page orientation/css changes
+# Retry logic for accessing url
+# Validate & manage rate limiting with exponential backoff
 
 ## Contributing
 

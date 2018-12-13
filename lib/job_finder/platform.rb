@@ -1,7 +1,18 @@
 module JobFinder
   module Platform
-    INDEED = 'indeed'.freeze
-    NAUKRI = 'naukri'.freeze
-    TIMES_JOB = 'timesjob'.freeze
+    INDEED = {
+      name: 'indeed',
+      base_url: 'https://www.indeed.co.uk'
+    }.freeze
+
+    NAUKRI = {
+      name: 'naukri',
+      base_url: ''
+    }.freeze
+
+    TIMES_JOB = {
+      name: 'times_job',
+      base_url: ''
+    }.freeze
   end
 end

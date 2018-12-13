@@ -4,15 +4,13 @@ module JobFinder
     class Scraper
       include ::SemanticLogger::Loggable
       PAGE_MULTIPLIER = 10
-      BASE_URL = URI('https://www.indeed.co.uk')
+      BASE_URL = URI(Platform::INDEED[:base_url])
 
       class << self
         def job_detail(params)
-          params = params.to_h
-          page = get_page(params[:page])
-          (1..page).each_with_object({}) do |page, response|
-            params[:start] = (page - 1) * PAGE_MULTIPLIER
-            response[page] = get_jobs_data(params)
+          (1..params[:upto_page]).each_with_object({}) do |upto_page, response|
+            params[:start] = (upto_page - 1) * PAGE_MULTIPLIER
+            response[upto_page] = get_jobs_data(params)
             response
           end
         end
@@ -20,10 +18,16 @@ module JobFinder
         private
 
         def get_jobs_data(params)
-          response = open_url(params)
-          raise UrlException, "Can't access the provided URL" unless response&.success?
+          response = get_response(params)
           document = Nokogiri::HTML(response.body)
           scrap_document(document)
+        end
+
+        def get_response(params)
+          response = open_url(params)
+          raise UrlException, "Can't access the provided URL" unless response&.success?
+
+          response
         end
 
         def scrap_document(document)
@@ -38,20 +42,14 @@ module JobFinder
         end
 
         def open_url(params)
-          connection = Faraday.new(url: BASE_URL.to_s)
+          connection = Faraday.new(url: BASE_URL)
           connection.get '/jobs', q: params[:category]&.strip, l: params[:location]&.strip, start: params[:start]
         rescue Faraday::ConnectionFailed => e
           logger.error "Faraday::ConnectionFailed Exception #{e.message}"
-          nil
+          raise e
         rescue StandardError => e
           logger.error "open_url Exception #{e.message}"
-          nil
-        end
-
-        def get_page(page)
-          page = page ? (Integer(page) rescue nil) : 1
-          raise PageNumberException, "Page should be a valid integer and greater than 0" if page.nil? || page.eql?(0)
-          page
+          raise e
         end
       end
     end
