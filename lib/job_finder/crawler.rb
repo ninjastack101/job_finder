@@ -9,13 +9,15 @@ module JobFinder
     end
 
     def crawl
-      raise UnsupportedPlatformException, "We don't support #{platform} platform" unless platforms.include?(platform.downcase)
+      raise UnsupportedPlatformException, "Invalid #{platform} platform" unless platforms.include?(platform.downcase)
+
       Object.const_get("JobFinder::#{platform.capitalize}::Scraper").job_detail(query_params)
     end
 
     private
+
     def platforms
-      Platform.constants.collect{|c| c.to_s.downcase}
+      Platform.constants.collect { |c| c.to_s.downcase }
     end
   end
 end
